@@ -7,8 +7,11 @@ Creating an API to perform post, get and update user data data.
 ## Prerequisites
 
 1.Visual studio code (IDE)
+
 2.POSTMAN
+
 3.Database - Postgres
+
 4.Node.js
 
 ## Dependencies to be installed 
@@ -34,11 +37,11 @@ GET - http://localhost:8080/v1/assignment/
 
 POST - http://localhost:8080/v1/assignment/
 
-PUT - http://localhost:4005/v1/assignment/{id}
+PUT - http://localhost:8080/v1/assignment/{id}
 
-GET - http://localhost:4005/v1/assignment/{id}
+GET - http://localhost:8080/v1/assignment/{id}
 
-DELETE - http://localhost:4005/v1/assignment/{id}
+DELETE - http://localhost:8080/v1/assignment/{id}
 
 
 ## Responds with following HTTP messages
@@ -59,7 +62,7 @@ DELETE - http://localhost:4005/v1/assignment/{id}
 
 
 <h4>Instructions:</h4>
-Step 1: 1. Clone the repository or download and unzip the source repository.
+Step 1: Clone the repository or download and unzip the source repository.
 
 Step 2: Create appropriate files in the IDE and write the code to test the API call in Postman.
 
@@ -76,9 +79,9 @@ GET - http://localhost:8080/v1/assignment/, where you should see: "200 OK".
 
 POST - http://localhost:8080/v1/assignment/, where you should see: "201 Created".
 
-GET - http://localhost:4005/v1/assignment/{id}, where you should see: "200 OK".
+GET - http://localhost:8080/v1/assignment/{id}, where you should see: "200 OK".
 
-PUT - http://localhost:4005/v1/assignment/{id}, where you should use: "204 Content".
+PUT - http://localhost:8080/v1/assignment/{id}, where you should use: "204 Content".
 
-DELETE - http://localhost:4005/v1/assignment/{id}, where you should use: "204 No Content".
+DELETE - http://localhost:8080/v1/assignment/{id}, where you should use: "204 No Content".
 

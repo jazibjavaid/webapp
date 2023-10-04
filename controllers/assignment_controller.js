@@ -143,7 +143,7 @@ exports.updateAssignment = (req, res, next) => {
         })
             .then(result => {
             console.log('Assignment updated successfully');
-            res.status(204).json({
+            return res.status(204).json({
                 message: 'Assignment updated successfully'
             });
             })
@@ -186,7 +186,7 @@ exports.deleteAssignment = (req, res, next) => {
         });
     })
     .then(result => {
-        res.status(204).json({ message: 'User deleted'});
+        return res.status(204).json({ message: 'User deleted'});
     })
     .catch(err => {
         res.status(400).send({
