@@ -195,3 +195,11 @@ exports.deleteAssignment = (req, res, next) => {
         console.log(err);
     });
 }
+
+exports.assignmentCheckMiddleware = (req, res, next) => {
+    if (req.method === 'PATCH' && Object.keys(req.body).length > 0) {
+      res.status(405).json();
+      return;
+    }
+    next();
+}; 
