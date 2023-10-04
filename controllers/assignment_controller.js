@@ -3,7 +3,7 @@ const { validationResult, body } = require('express-validator');
 const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 
 exports.getAllAssignments = (req, res, next) => {
-    const accountId = req.user.id;
+    
     if (Object.keys(req.body).length > 0 || Object.keys(req.query).length > 0) {
         return res.status(400).json({ message: 'Request body not allowed' });
     }
@@ -22,7 +22,7 @@ exports.getAllAssignments = (req, res, next) => {
 
 exports.getAssignment = (req, res, next) => {
     const assignmentId = req.params.id;
-    const accountId = req.user.id;
+    
     if (Object.keys(req.body).length > 0) {
         return res.status(400).json({ message: 'Request body is not allowed' });
     }
@@ -186,7 +186,7 @@ exports.deleteAssignment = (req, res, next) => {
         });
     })
     .then(result => {
-        return res.status(204).json({ message: 'User deleted'});
+        return res.status(204).json({ message: 'Assignment deleted'});
     })
     .catch(err => {
         res.status(400).send({
