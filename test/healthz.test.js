@@ -6,7 +6,7 @@ const request = supertest(app);
 describe("/healthz", () => {
     let response;
     beforeEach(async () => {
-    response = await request.get("/healthz");
+    response = await request.get("/healt");
   });
 
   it("should return a 200 status code", () => {
