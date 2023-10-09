@@ -6,7 +6,7 @@ Creating an API to perform post, get and update user data data.
 
 ## Prerequisites
 
-1.Visual studio code (IDE)
+1.Visual studio code (Integrated Development Environment)
 
 2.POSTMAN
 
