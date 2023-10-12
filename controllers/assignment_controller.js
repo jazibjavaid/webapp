@@ -45,9 +45,25 @@ exports.getAssignment = (req, res, next) => {
             });
 }
 
+function checkForExtraFields(req, res, next) {
+    const allowedFields = ['name', 'points', 'num_of_attempts', 'deadline', 'assignment_created', 'assignment_updated'];
+    const bodyFields = Object.keys(req.body);
+  
+    const extraFields = bodyFields.filter(field => !allowedFields.includes(field));
+  
+    if (extraFields.length > 0) {
+      return res.status(400).json({
+        message: 'Extra fields found in the request body',
+        extraFields,
+      });
+    }
+  
+    next();
+  }
+
 exports.createAssignment = [
     // Define validation rules for your fields
-    body('name').notEmpty().withMessage('Name is required'),
+    body('name').notEmpty().withMessage('Name is required').isString().withMessage('Name must be a string'),
     body('points').notEmpty().withMessage('Points is required'),
     body('num_of_attempts').notEmpty().withMessage('Points is required'),
     body('points')
@@ -57,6 +73,8 @@ exports.createAssignment = [
       .isInt({ min: 1, max: 100 })
       .withMessage('Points must be between 1 and 100'),
     body('deadline').notEmpty().isISO8601().withMessage('Deadline is required and must be in ISO8601 format'),
+
+    checkForExtraFields,
 
     (req, res, next) => {
       // Check for validation errors
@@ -70,8 +88,6 @@ exports.createAssignment = [
         points: req.body.points,
         num_of_attempts: req.body.num_of_attempts,
         deadline: req.body.deadline,
-        assignment_created: req.body.assignment_created,
-        assignment_updated: req.body.assignment_updated,
         accountId: req.user.id
       };
   
@@ -94,19 +110,26 @@ exports.createAssignment = [
 
 exports.updateAssignment = (req, res, next) => {
     const assignmentId = req.params.id;
-    const allowedFields = ['name', 'points', 'num_of_attempts', 'deadline'];
-    const accountId = req.user.id; 
-
+    const allowedFields = ['name', 'points', 'num_of_attempts', 'deadline', 'assignment_created', 'assignment_updated'];
+    const bodyFields = Object.keys(req.body);
+    const extraFields = bodyFields.filter(field => !allowedFields.includes(field));
+    if (extraFields.length > 0) {
+        return res.status(400).json({
+          message: 'Extra fields found in the request body',
+          extraFields,
+        });
+      }
+    const accountId = req.user.id;
     // Filter req.body to only include allowed fields
     const updatedFields = {};
-    for (const field of allowedFields) {
+    const requiredFields = ['name', 'points', 'num_of_attempts', 'deadline'];
+    for (const field of requiredFields) {
         if (req.body.hasOwnProperty(field)) {
             updatedFields[field] = req.body[field];
         }
     }
 
     // Check if any of the required fields are undefined
-    const requiredFields = ['name', 'points', 'num_of_attempts', 'deadline'];
     for (const field of requiredFields) {
         if (updatedFields[field] === undefined) {
             return res.status(400).json({ message: `Field '${field}' is required` });
