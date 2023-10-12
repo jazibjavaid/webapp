@@ -179,14 +179,14 @@ exports.deleteAssignment = (req, res, next) => {
         if (assignment.accountId !== accountId) {
             return res.status(403).json({ message: 'You do not have permission to delete this assignment' });
         }
-        return Assignment.destroy({
+        Assignment.destroy({
             where: {
                 id: assignmentId
             }
-        });
-    })
-    .then(result => {
-        return res.status(204).json({ message: 'Assignment deleted'});
+        })
+        .then(result => {
+            return res.status(204).json({ message: 'Assignment deleted'});
+        })
     })
     .catch(err => {
         res.status(400).send({
