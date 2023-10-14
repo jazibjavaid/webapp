@@ -53,23 +53,8 @@ jobs:
     - name: Run tests
       run: npm test
     
-    - name: Install Packer
-      run: |
-        curl -fsSL https://releases.hashicorp.com/packer/1.8.6/packer_1.8.6_linux_amd64.zip -o packer.zip
-        unzip packer.zip
-        sudo mv packer /usr/local/bin/
-        rm packer.zip
-
-    - name: Check Packer Template Format
-      run: |
-        if ! packer fmt -check=true .; then
-          echo "Packer template is not correctly formatted. Please run 'packer fmt' to format it."
-          exit 1
-        fi
+    - name: Run Packer Format Check
+      run: packer fmt -check=true
     
-    - name: Validate Packer Template
-      run: |
-        if ! packer validate .; then
-          echo "Packer template validation failed. Please fix the issues in your template."
-          exit 1
-        fi
+    - name: Run Packer Validate
+      run: packer validate .
