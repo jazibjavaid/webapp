@@ -54,7 +54,7 @@ jobs:
       run: npm test
     
     - name: Run Packer Format Check
-      run: packer fmt -check=true
+      run: packer fmt -check=true .
     
     - name: Run Packer Validate
       run: packer validate .
