@@ -55,6 +55,15 @@ jobs:
     
     - name: Run Packer Format Check
       run: packer fmt -check=true .
+
+    - name: Setup Packer
+      uses: hashicorp/setup-packer@main
+      id: setup
+      with:
+        version: "latest"
+
+    - name: Run Packer Init
+      run: packer init
     
     - name: Run Packer Validate
       run: packer validate .
