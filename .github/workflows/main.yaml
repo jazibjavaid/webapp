@@ -54,7 +54,7 @@ jobs:
       run: npm test
     
     - name: Compressing the project to the zip file
-        run: zip -r webapp.zip .
+      run: zip -r webapp.zip .
 
     - name: Setup Packer
       uses: hashicorp/setup-packer@main
