@@ -28,7 +28,7 @@ async function importCSV(filePath) {
         console.log('CSV import completed.');
       });
   } catch (error) {
-    console.error('Importing CSV');
+    console.log('Importing CSV');
   }
 }
 
