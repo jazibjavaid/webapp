@@ -33,7 +33,7 @@ source "amazon-ebs" "my-ami" {
   ami_users       = ["363018103404", "714147557017"]
   region          = "${var.aws_region}"
   instance_type   = "t2.micro"
-  source_ami      = "${var.source_ami}"
+  source_ami       = "${var.source_ami}"
   ssh_username    = "${var.ssh_username}"
   subnet_id       = "${var.subnet_id}"
 }
