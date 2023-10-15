@@ -53,8 +53,8 @@ jobs:
     - name: Run tests
       run: npm test
     
-    - name: Run Packer Format Check
-      run: packer fmt -check=true .
+    - name: Compressing the project to the zip file
+        run: zip -r webapp.zip .
 
     - name: Setup Packer
       uses: hashicorp/setup-packer@main
@@ -64,6 +64,9 @@ jobs:
 
     - name: Run Packer Init
       run: packer init .
+    
+    - name: Run Packer Format Check
+      run: packer fmt -check=true .
     
     - name: Run Packer Validate
       run: packer validate -var-file=packer_variables.pkrvars.hcl .

@@ -31,10 +31,10 @@ build {
     ]
   }
 
-  // provisioner "file" {
-  //   source      = "./webapp.zip"
-  //   destination = "/home/admin/webapp.zip"
-  // }
+  provisioner "file" {
+    source      = "./webapp.zip"
+    destination = "/home/admin/webapp.zip"
+  }
 
   // provisioner "shell" {
   //   script = "./projsetup.sh"
