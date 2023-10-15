@@ -36,9 +36,9 @@ build {
     destination = "/home/admin/webapp.zip"
   }
 
-  // provisioner "shell" {
-  //   script = "./projsetup.sh"
-  // }
+  provisioner "shell" {
+    script = "./projsetup.sh"
+  }
 
   // provisioner "shell" {
   //   script = "./appstart.sh"

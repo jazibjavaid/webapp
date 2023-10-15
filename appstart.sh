@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Unzip application
-unzip wepapp.zip
+unzip webapp.zip
 
 # Go to path
 cd webapp || exit
