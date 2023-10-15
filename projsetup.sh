@@ -11,3 +11,6 @@ node -v
 # Get into postgres
 POSTGRES_PASSWORD="mydata"
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
+
+# Unzip application
+unzip webapp.zip
