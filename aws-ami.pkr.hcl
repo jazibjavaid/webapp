@@ -9,8 +9,8 @@ packer {
 
 source "amazon-ebs" "my-ami" {
   ami_name        = "my-ami-node${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
-  ami_description = "this ami has node and postgres installed"
-  ami_users       = ["363018103404"]
+  ami_description = var.ami_description
+  ami_users       = var.ami_users
   region          = var.aws_region
   instance_type   = var.instance_type
   source_ami      = var.source_ami

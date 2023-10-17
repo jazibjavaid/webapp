@@ -22,3 +22,13 @@ variable "instance_type" {
   type    = string
   default = "t2.micro"
 }
+
+variable "ami_description" {
+  type    = string
+  default = "this ami has node and postgres installed"
+}
+
+variable "ami_users" {
+  type    = list(string)
+  default = ["363018103404", "714147557017"]
+}
