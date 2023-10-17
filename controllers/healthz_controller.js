@@ -1,12 +1,12 @@
 const sequelize = require('../connection');
 
 const healthCheckMiddleware = (req, res, next) => {
-    if (Object.keys(req.body).length > 0 || Object.keys(req.query).length > 0) {
-        return res.status(400).json({ message: 'Request body not allowed' });
-    }
     if (req.method !== 'GET') {
       res.status(405).json();
       return;
+    }
+    if (Object.keys(req.body).length > 0 || Object.keys(req.query).length > 0) {
+      return res.status(400).json({ message: 'Request body not allowed' });
     }
     next();
 };  

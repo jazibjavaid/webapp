@@ -44,7 +44,6 @@ app.use((req, res, next) => {
         .authenticate()
         .then(() => {
             app.use('/healthz', healthzroutes);
-            importCSV(csvFilePath);
             app.use(basicAuthenticator);
             app.use('/v1/assignment', assignmentroutes);
             // If the database connection is successful, proceed with the next middleware
@@ -66,6 +65,7 @@ const server = app.listen(port, () => {
 sequelize
     .sync()
     .then(result => {
+        importCSV(csvFilePath);
         console.log("database connected");
     })
     .catch(err => console.log(err));
