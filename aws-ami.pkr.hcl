@@ -13,9 +13,9 @@ source "amazon-ebs" "my-ami" {
   ami_users       = var.ami_users
   region          = var.aws_region
   instance_type   = var.instance_type
-  source_ami      = var.source_ami
+  source_ami      =  var.source_ami
   ssh_username    = var.ssh_username
-  subnet_id       = var.subnet_id
+  subnet_id       =  var.subnet_id
 }
 
 build {
