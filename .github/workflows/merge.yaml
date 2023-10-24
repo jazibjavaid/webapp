@@ -53,9 +53,6 @@ jobs:
     - name: Run tests
       run: npm test
     
-    - name: Copy .env to the Web Application
-      run: cp .env webapp
-
     - name: Compressing the project to the zip file
       run: zip -r webapp.zip .
     
