@@ -1,0 +1,17 @@
+[Unit]
+Description="NODE JS SYSTEMD SERVICE"
+After=network.target
+Wants=postgres.service
+
+[Service]
+EnvironmentFile=/home/admin/.env
+Type=simple
+User=admin
+Restart=always
+RestartSec=500ms
+StartLimitInterval=0
+WorkingDirectory=/home/admin
+ExecStart=/usr/bin/npm start
+
+[Install]
+WantedBy=cloud-init.target
