@@ -98,6 +98,6 @@ router.put('/:id', controller.updateAssignment);
  */
 router.delete('/:id', controller.deleteAssignment);
 
-router.use('/:id',controller.assignmentCheckMiddleware);
+router.use('/',controller.assignmentCheckMiddleware);
 
 module.exports = router;
