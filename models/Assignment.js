@@ -75,7 +75,7 @@ const Assignment = db.define('Assignment', {
         type: DataTypes.UUID,
         references: {
           model: 'Accounts',
-          key: 'id' // The primary key of the Accounts table
+          key: 'id'
         }
     }
 }, {
