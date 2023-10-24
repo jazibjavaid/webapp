@@ -220,7 +220,7 @@ exports.deleteAssignment = (req, res, next) => {
 }
 
 exports.assignmentCheckMiddleware = (req, res, next) => {
-    if (req.method === 'PATCH' && Object.keys(req.body).length > 0) {
+    if (req.method === 'PATCH') {
       res.status(405).json();
       return;
     }

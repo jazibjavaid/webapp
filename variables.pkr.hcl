@@ -25,7 +25,7 @@ variable "instance_type" {
 
 variable "ami_description" {
   type    = string
-  default = "this ami has node and postgres installed"
+  default = "this ami has node installed and services added"
 }
 
 variable "ami_users" {
