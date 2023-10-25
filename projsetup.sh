@@ -16,6 +16,6 @@ sudo groupadd myusrgrp
 sudo useradd -s /bin/false -g myusrgrp -d /opt/mywebappdir -m webappusr
 
 sudo mv /tmp/webapp.zip /opt/mywebappdir/webapp.zip
-cd /opt/mywebappdir && unzip ./webapp.zip
+cd /opt/mywebappdir && sudo unzip ./webapp.zip
 
 sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service
