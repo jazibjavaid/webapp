@@ -18,14 +18,14 @@ function basicAuthenticator(req, res, next) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
-        // Compare the input password with the stored hashed password
+        
         const isPasswordValid = await bcrypt.compare(password, account.password);
 
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
-        // Authentication successful; set user information in the request for future use
+        
         req.user = account;
         next();
     })

@@ -26,7 +26,7 @@ exports.getAssignment = (req, res, next) => {
     if (Object.keys(req.body).length > 0) {
         return res.status(400).json({ message: 'Request body is not allowed' });
     }
-    // Check if assignmentId is a valid UUID
+    
     if (!uuidRegex.test(assignmentId)) {
         return res.status(400).json({ message: 'Invalid UUID format for assignmentId' });
     }
@@ -62,7 +62,7 @@ function checkForExtraFields(req, res, next) {
   }
 
 exports.createAssignment = [
-    // Define validation rules for your fields
+    
     body('name').notEmpty().withMessage('Name is required').isString().withMessage('Name must be a string'),
     body('points').notEmpty().withMessage('Points is required'),
     body('num_of_attempts').notEmpty().withMessage('Points is required'),
@@ -77,7 +77,6 @@ exports.createAssignment = [
     checkForExtraFields,
 
     (req, res, next) => {
-      // Check for validation errors
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -120,7 +119,7 @@ exports.updateAssignment = (req, res, next) => {
         });
       }
     const accountId = req.user.id;
-    // Filter req.body to only include allowed fields
+  
     const updatedFields = {};
     const requiredFields = ['name', 'points', 'num_of_attempts', 'deadline'];
     for (const field of requiredFields) {
@@ -129,14 +128,14 @@ exports.updateAssignment = (req, res, next) => {
         }
     }
 
-    // Check if any of the required fields are undefined
+    
     for (const field of requiredFields) {
         if (updatedFields[field] === undefined) {
             return res.status(400).json({ message: `Field '${field}' is required` });
         }
     }
 
-    // Add validation rules for specific fields
+    
     if (!uuidRegex.test(assignmentId)) {
         return res.status(400).json({ message: 'Invalid UUID format for assignmentId' });
     }
@@ -155,12 +154,12 @@ exports.updateAssignment = (req, res, next) => {
             return res.status(404).json({ message: 'Assignment not found' });
         }
 
-        // Check if the assignment belongs to the user
+        
         if (assignment.accountId !== accountId) {
             return res.status(403).json({ message: 'You do not have permission to update this assignment' });
         }
 
-        // Update the assignment
+        
         Assignment.update(updatedFields, {
             where: { id: assignmentId }
         })

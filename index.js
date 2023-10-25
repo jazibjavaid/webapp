@@ -15,7 +15,6 @@ const port = 8080;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Apply basicAuthenticator middleware to all API requests
 
 const swaggerOptions = {
     swaggerDefinition: {
@@ -46,11 +45,9 @@ app.use((req, res, next) => {
             app.use('/healthz', healthzroutes);
             app.use(basicAuthenticator);
             app.use('/v1/assignment', assignmentroutes);
-            // If the database connection is successful, proceed with the next middleware
             next();
         })
         .catch((err) => {
-            // If the database connection fails, send a 503 Service Unavailable response
             res.status(503).json({ message: 'Service Unavailable' });
         });
 });
