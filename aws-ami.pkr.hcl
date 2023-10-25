@@ -41,6 +41,11 @@ build {
     destination = "/tmp/webapp.service"
   }
 
+  provisioner "file" {
+    source      = "./webapp.service"
+    destination = "/tmp/webapp.service"
+  }
+
   provisioner "shell" {
     script = "./projsetup.sh"
   }
