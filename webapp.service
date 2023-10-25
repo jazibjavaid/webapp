@@ -6,7 +6,7 @@ Wants=postgres.service
 [Service]
 EnvironmentFile=/opt/mywebappdir/.env
 Type=simple
-User=admin
+User=webappusr
 Restart=always
 RestartSec=500ms
 StartLimitInterval=0
