@@ -4,13 +4,13 @@ After=network.target
 Wants=postgres.service
 
 [Service]
-EnvironmentFile=/home/admin/.env
+EnvironmentFile=/opt/mywebappdir/.env
 Type=simple
 User=admin
 Restart=always
 RestartSec=500ms
 StartLimitInterval=0
-WorkingDirectory=/home/admin
+WorkingDirectory=/opt/mywebappdir
 ExecStart=/usr/bin/npm start
 
 [Install]
