@@ -2,6 +2,7 @@ const Assignment = require('../models/Assignment.js');
 const { validationResult, body } = require('express-validator');
 const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 const { logger } = require('../logger.js');
+const sdc = require('../sdc.js');
 
 exports.getAllAssignments = (req, res, next) => {
     
@@ -13,6 +14,7 @@ exports.getAllAssignments = (req, res, next) => {
     Assignment.findAll()
               .then(assignments => {
                 logger.info("Fetched assignment details successfully");
+                sdc.increment("webapp.getAllAssignments");
                 res.status(200).json({ assignments: assignments });
               })
               .catch(err => {
@@ -42,6 +44,7 @@ exports.getAssignment = (req, res, next) => {
                     logger.error("Assignment not found");
                     return res.status(404).json({ message: 'Assignment not found' });
                 }
+                sdc.increment("webapp.getAssignment");
                 logger.info("Fetched assignment details: " + JSON.stringify(assignment));
                 res.status(200).send(assignment);
             })
@@ -103,7 +106,8 @@ exports.createAssignment = [
   
       Assignment.create(assignment)
         .then(result => {
-            logger.info("Assignment created successfully");  
+            logger.info("Assignment created successfully");
+            sdc.increment("webapp.createAssignment");  
             res.status(201).json({
                 message: 'Assignment created successfully',
                 assignment: result
@@ -189,7 +193,8 @@ exports.updateAssignment = (req, res, next) => {
             where: { id: assignmentId }
         })
             .then(result => {
-            logger.info("Assignment updated successfully"); 
+            logger.info("Assignment updated successfully");
+            sdc.increment("webapp.updateAssignment");  
             return res.status(204).json({
                 message: 'Assignment updated successfully'
             });
@@ -236,7 +241,8 @@ exports.deleteAssignment = (req, res, next) => {
             }
         })
         .then(result => {
-            logger.info("Assignment deleted successfully"); 
+            logger.info("Assignment deleted successfully");
+            sdc.increment("webapp.deleteAssignment");  
             return res.status(204).json({ message: 'Assignment deleted'});
         })
     })

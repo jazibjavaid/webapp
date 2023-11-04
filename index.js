@@ -9,6 +9,8 @@ const csvFilePath = './opt/users.csv';
 const importCSV = require('./import_csv.js');
 const basicAuthenticator = require('./middleware/basicAuthenticator.js');
 const { logger, winston} = require('./logger.js');
+const sdc = require('./sdc.js');
+
 
 const app = express();
 const port = 8080;
@@ -37,6 +39,10 @@ logger.add(
         format: winston.format.simple(),
     })
 );
+
+sdc.socket.on("error", function (error) {
+    return console.error("Error in socket: ", error);
+});
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
