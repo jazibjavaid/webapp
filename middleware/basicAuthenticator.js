@@ -1,10 +1,12 @@
 const Account = require('../models/Account.js');
 const bcrypt = require('bcrypt');
+const { logger } = require('../logger.js');
 
 function basicAuthenticator(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Basic ')) {
+    logger.error("User did not provide the Auth credentials");
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
@@ -15,14 +17,16 @@ function basicAuthenticator(req, res, next) {
   Account.findOne({ where: { email: email } })
     .then(async(account) => {
         if (!account) {
-            return res.status(401).json({ message: 'Unauthorized' });
+          logger.error("Invalid Email");
+          return res.status(401).json({ message: 'Unauthorized' });
         }
 
         
         const isPasswordValid = await bcrypt.compare(password, account.password);
 
         if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Unauthorized' });
+          logger.error("Password didn't match");
+          return res.status(401).json({ message: 'Unauthorized' });
         }
 
         

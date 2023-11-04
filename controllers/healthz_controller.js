@@ -1,4 +1,5 @@
 const sequelize = require('../connection');
+const { logger } = require('../logger.js');
 
 const healthCheckMiddleware = (req, res, next) => {
     if (req.method !== 'GET') {
@@ -6,6 +7,7 @@ const healthCheckMiddleware = (req, res, next) => {
       return;
     }
     if (Object.keys(req.body).length > 0 || Object.keys(req.query).length > 0) {
+      logger.error("Payload not allowed for GET request");
       return res.status(400).json({ message: 'Request body not allowed' });
     }
     next();
@@ -13,9 +15,11 @@ const healthCheckMiddleware = (req, res, next) => {
 
 const gethealthCheckController = async (req, res) => {
     if (Object.keys(req.body).length > 0 || Object.keys(req.query).length > 0) {
-        return res.status(400).json({ message: 'Request body not allowed' });
+      logger.error("Payload not allowed for GET request");
+      return res.status(400).json({ message: 'Request body not allowed' });
     }
     if (req.params.id !== undefined) {
+      logger.error("Query params not allowed for GET request");
       return res.status(404).json();
     }
     try {
@@ -23,6 +27,7 @@ const gethealthCheckController = async (req, res) => {
         res.set('cache-control', 'no-cache');
         res.status(200).json();
       } catch (error) {
+        logger.error("Database service is not available");
         res.status(503).json();
       }
 };
