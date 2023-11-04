@@ -8,6 +8,7 @@ const swaggerUi = require('swagger-ui-express');
 const csvFilePath = './opt/users.csv';
 const importCSV = require('./import_csv.js');
 const basicAuthenticator = require('./middleware/basicAuthenticator.js');
+const { logger, winston} = require('./logger.js');
 
 const app = express();
 const port = 8080;
@@ -31,6 +32,12 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+logger.add(
+    new winston.transports.Console({
+        format: winston.format.simple(),
+    })
+);
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -48,6 +55,7 @@ app.use((req, res, next) => {
             next();
         })
         .catch((err) => {
+            logger.error("Database service is not available");
             res.status(503).json({ message: 'Service Unavailable' });
         });
 });

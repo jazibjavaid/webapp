@@ -2,6 +2,7 @@ const fs = require('fs');
 const csv = require('csv-parser');
 const { sequelize } = require('./models/Account.js');
 const bcrypt = require('bcrypt');
+const { logger } = require('./logger.js');
 
 async function importCSV(filePath) {
   try {
@@ -23,10 +24,10 @@ async function importCSV(filePath) {
         }
       })
       .on('end', () => {
-        console.log('CSV import completed.');
+        logger.info("CSV imported successfully");
       });
   } catch (error) {
-    console.log('Error importing CSV');
+    logger.error("Error occured while importing CSV");
   }
 }
 
