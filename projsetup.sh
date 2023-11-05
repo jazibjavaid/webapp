@@ -20,5 +20,6 @@ cd /opt/mywebappdir && sudo unzip ./webapp.zip
 
 sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service
 
-sudo yum install amazon-cloudwatch-agent -y
+sudo wget https://amazoncloudwatch-agent.s3.amazonaws.com/debian/amd64/latest/amazon-cloudwatch-agent.deb
+sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
 sudo mv /tmp/cloudwatch_config.json /opt/mywebappdir/cloudwatch_config.json
