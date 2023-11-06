@@ -29,7 +29,7 @@ const gethealthCheckController = async (req, res) => {
         res.set('cache-control', 'no-cache');
         res.status(200).json();
       } catch (error) {
-        logger.error("Database service is not available");
+        logger.error("Database service is not available" + error);
         res.status(503).json();
       }
 };
