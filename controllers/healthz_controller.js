@@ -1,5 +1,6 @@
 const sequelize = require('../connection');
 const { logger } = require('../logger.js');
+const sdc = require('../sdc.js');
 
 const healthCheckMiddleware = (req, res, next) => {
     if (req.method !== 'GET') {
@@ -24,6 +25,7 @@ const gethealthCheckController = async (req, res) => {
     }
     try {
         await sequelize.authenticate();
+        sdc.increment("healthz.get");
         res.set('cache-control', 'no-cache');
         res.status(200).json();
       } catch (error) {
