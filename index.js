@@ -61,7 +61,7 @@ app.use((req, res, next) => {
             next();
         })
         .catch((err) => {
-            logger.error("Database service is not available");
+            logger.error("Database service is not available" + err);
             res.status(503).json({ message: 'Service Unavailable' });
         });
 });
