@@ -11,6 +11,11 @@
                         "file_path": "/opt/mywebappdir/logs/allapplogs.log",
                         "log_group_name": "mywebapploggrp",
                         "log_stream_name": "webapp"
+                    },
+                    {
+                        "file_path": "/opt/mywebappdir/logs/errorlogs.log",
+                        "log_group_name": "mywebapploggrp",
+                        "log_stream_name": "webapperrors"
                     }
                 ]
             }
