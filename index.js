@@ -78,6 +78,7 @@ sequelize
     .then(result => {
         importCSV(csvFilePath);
         console.log("database connected");
+        logger.info("Database is connected with service");
     })
     .catch(err => console.log(err));
 
