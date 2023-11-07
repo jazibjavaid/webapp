@@ -8,6 +8,7 @@ const healthCheckMiddleware = (req, res, next) => {
       return;
     }
     if (Object.keys(req.body).length > 0 || Object.keys(req.query).length > 0) {
+      sdc.increment("healthz.get");
       logger.error("Payload not allowed for GET request");
       return res.status(400).json({ message: 'Request body not allowed' });
     }
@@ -15,6 +16,7 @@ const healthCheckMiddleware = (req, res, next) => {
 };  
 
 const gethealthCheckController = async (req, res) => {
+    sdc.increment("healthz.get");
     if (Object.keys(req.body).length > 0 || Object.keys(req.query).length > 0) {
       logger.error("Payload not allowed for GET request");
       return res.status(400).json({ message: 'Request body not allowed' });
@@ -25,7 +27,7 @@ const gethealthCheckController = async (req, res) => {
     }
     try {
         await sequelize.authenticate();
-        sdc.increment("healthz.get");
+        logger.info("Health API is working");
         res.set('cache-control', 'no-cache');
         res.status(200).json();
       } catch (error) {
