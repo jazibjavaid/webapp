@@ -100,4 +100,6 @@ router.delete('/:id', controller.deleteAssignment);
 
 router.use('/',controller.assignmentCheckMiddleware);
 
+router.post('/:id/submission',controller.createSubmission);
+
 module.exports = router;

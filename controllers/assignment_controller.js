@@ -1,4 +1,5 @@
 const Assignment = require('../models/Assignment.js');
+const Submission = require('../models/Submission.js');
 const { validationResult, body } = require('express-validator');
 const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 const { logger } = require('../logger.js');
@@ -267,3 +268,74 @@ exports.assignmentCheckMiddleware = (req, res, next) => {
     }
     next();
 }; 
+
+exports.createSubmission = (req, res, next) => {
+    sdc.increment("webapp.createSubmission"); 
+    const assignmentId = req.params.id;
+    const accountId = req.user.id;
+    if (!uuidRegex.test(assignmentId)) {
+        logger.error("Assignment ID is not valid");
+        return res.status(400).json({ message: 'Invalid UUID format for assignmentId' });
+    }
+
+    if (req.body.submission_url !== undefined && (typeof req.body.submission_url !== 'string')) {
+        logger.error("Invalid value for submission url field");
+        return res.status(400).json({ message: 'Invalid value for submission url' });
+    }
+
+    Assignment.findByPk(assignmentId)
+        .then(assignment => {
+            if (!assignment) {
+                logger.error("Assignment not found");
+                return res.status(404).json({ message: 'Assignment not found' });
+            }
+
+            if (assignment.accountId !== accountId) {
+                logger.error("User does not have permission to create a submission");
+                return res.status(403).json({ message: 'You do not have permission to create a submission' });
+            }
+
+            const currentDatetime = new Date();
+            if (assignment.deadline && assignment.deadline < currentDatetime) {
+                logger.error("Submission deadline has passed");
+                return res.status(400).json({ message: 'Submission deadline has passed' });
+            }
+
+            Submission.count({
+                where: { assignment_id: assignmentId }
+            }).then(submissionCount => {
+                if (submissionCount >= assignment.num_of_attempts) {
+                    logger.error("Exceeded the maximum number of submission attempts");
+                    return res.status(400).json({ message: 'Exceeded the maximum number of submission attempts' });
+                }
+
+                const submission = {
+                    assignment_id: assignmentId,
+                    submission_url: req.body.submission_url
+                };
+
+                Submission.create(submission)
+                    .then(result => {
+                        logger.info("Submission created successfully");
+                        res.status(201).json({
+                            message: 'Submission created successfully',
+                            submission: result
+                        });
+                    })
+                    .catch(err => {
+                        logger.error("Error occurred while creating submission");
+                        res.status(400).send({
+                            message: err.message || 'Some error occurred'
+                        });
+                        console.log(err);
+                    });
+            });
+        })
+        .catch(err => {
+            logger.error("Error occurred while fetching the assignment");
+            res.status(400).send({
+                message: err.message || "Some error occurred"
+            });
+            console.log(err);
+        });
+};
