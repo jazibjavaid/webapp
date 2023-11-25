@@ -4,6 +4,16 @@ const { validationResult, body } = require('express-validator');
 const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 const { logger } = require('../logger.js');
 const sdc = require('../sdc.js');
+const AWS = require('aws-sdk');
+AWS.config.update({
+    region: process.env.AWSREGION,
+    accessKeyId: process.env.AWSACCESSKEYID,
+    secretAccessKey: process.env.AWSACCESSSECRET,
+});
+
+const sns = new AWS.SNS();
+
+require('dotenv').config();
 
 exports.getAllAssignments = (req, res, next) => {
     sdc.increment("webapp.getAllAssignments");
@@ -317,6 +327,10 @@ exports.createSubmission = (req, res, next) => {
                 Submission.create(submission)
                     .then(result => {
                         logger.info("Submission created successfully");
+                        postToSns({
+                            submissionUrl: result.submission_url,
+                            userEmail: req.user.email
+                        });
                         res.status(201).json({
                             message: 'Submission created successfully',
                             submission: result
@@ -339,3 +353,18 @@ exports.createSubmission = (req, res, next) => {
             console.log(err);
         });
 };
+
+function postToSns(message) {
+    const params = {
+        Message: JSON.stringify(message),
+        TopicArn: process.env.SNSARN
+    };
+
+    sns.publish(params, (err, data) => {
+        if (err) {
+            console.error("Error publishing to SNS:", err);
+        } else {
+            console.log("Successfully published to SNS:", data);
+        }
+    });
+}
