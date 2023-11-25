@@ -355,16 +355,21 @@ exports.createSubmission = (req, res, next) => {
 };
 
 function postToSns(message) {
-    const params = {
-        Message: JSON.stringify(message),
-        TopicArn: process.env.SNSARN
-    };
-
-    sns.publish(params, (err, data) => {
-        if (err) {
-            console.error("Error publishing to SNS:", err);
-        } else {
-            console.log("Successfully published to SNS:", data);
-        }
-    });
+    try{
+        const params = {
+            Message: JSON.stringify(message),
+            TopicArn: process.env.SNSARN
+        };
+        sns.publish(params, (err, data) => {
+            if (err) {
+                console.error("Error publishing to SNS:", err);
+            } else {
+                console.log("Successfully published to SNS:", data);
+            }
+        });
+    }
+    catch(err) {
+        logger.error("Error occurred while posting message to sns");
+        console.log(err);
+    }
 }
