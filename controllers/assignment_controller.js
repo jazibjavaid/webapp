@@ -5,11 +5,7 @@ const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-
 const { logger } = require('../logger.js');
 const sdc = require('../sdc.js');
 const AWS = require('aws-sdk');
-AWS.config.update({
-    region: process.env.AWSREGION,
-    accessKeyId: process.env.AWSACCESSKEYID,
-    secretAccessKey: process.env.AWSACCESSSECRET,
-});
+AWS.config.update({ region: process.env.AWSREGION });
 
 const sns = new AWS.SNS();
 
@@ -329,7 +325,9 @@ exports.createSubmission = (req, res, next) => {
                         logger.info("Submission created successfully");
                         postToSns({
                             submissionUrl: result.submission_url,
-                            userEmail: req.user.email
+                            userEmail: req.user.email,
+                            assignmentId: result.assignment_id,
+                            userId: req.user.id
                         });
                         res.status(201).json({
                             message: 'Submission created successfully',
