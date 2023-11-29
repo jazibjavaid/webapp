@@ -296,10 +296,10 @@ exports.createSubmission = (req, res, next) => {
                 return res.status(404).json({ message: 'Assignment not found' });
             }
 
-            if (assignment.accountId !== accountId) {
-                logger.error("User does not have permission to create a submission");
-                return res.status(403).json({ message: 'You do not have permission to create a submission' });
-            }
+            // if (assignment.accountId !== accountId) {
+            //     logger.error("User does not have permission to create a submission");
+            //     return res.status(403).json({ message: 'You do not have permission to create a submission' });
+            // }
 
             const currentDatetime = new Date();
             if (assignment.deadline && assignment.deadline < currentDatetime) {
@@ -308,16 +308,17 @@ exports.createSubmission = (req, res, next) => {
             }
 
             Submission.count({
-                where: { assignment_id: assignmentId }
+                where: { assignment_id: assignmentId, submitted_by: accountId }
             }).then(submissionCount => {
                 if (submissionCount >= assignment.num_of_attempts) {
-                    logger.error("Exceeded the maximum number of submission attempts");
+                    logger.error("Exceeded the maximum number of submission attempts for the given user");
                     return res.status(400).json({ message: 'Exceeded the maximum number of submission attempts' });
                 }
 
                 const submission = {
                     assignment_id: assignmentId,
-                    submission_url: req.body.submission_url
+                    submission_url: req.body.submission_url,
+                    submitted_by: req.user.id
                 };
 
                 Submission.create(submission)

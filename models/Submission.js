@@ -27,6 +27,13 @@ const Submission = db.define('Submission', {
     assignment_updated: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
+    },
+    submitted_by: {
+        type: DataTypes.UUID,
+        references: {
+          model: 'Accounts',
+          key: 'id'
+        }
     }
 }, {
     timestamps: false
