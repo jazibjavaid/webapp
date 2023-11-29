@@ -312,7 +312,7 @@ exports.createSubmission = (req, res, next) => {
             }).then(submissionCount => {
                 if (submissionCount >= assignment.num_of_attempts) {
                     logger.error("Exceeded the maximum number of submission attempts for the given user");
-                    return res.status(400).json({ message: 'Exceeded the maximum number of submission attempts' });
+                    return res.status(400).json({ message: 'Exceeded the maximum number of submission attempts for the given user' });
                 }
 
                 const submission = {
@@ -364,6 +364,7 @@ function postToSns(message) {
                 console.error("Error publishing to SNS:", err);
             } else {
                 console.log("Successfully published to SNS:", data);
+                logger.info("Successfully published to SNS");
             }
         });
     }
