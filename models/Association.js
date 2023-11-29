@@ -20,4 +20,12 @@ Submission.belongsTo(Assignment, {
     foreignKey: 'assignment_id' 
 });
 
+Account.hasMany(Submission, {
+    foreignKey: 'accountId' 
+});
+
+Submission.belongsTo(Account, { 
+    foreignKey: 'accountId' 
+});
+
 module.exports = { Account, Assignment, Submission };
