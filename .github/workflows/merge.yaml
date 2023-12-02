@@ -3,7 +3,7 @@ name: Integration Test
 on:
   push:
     branches:
-      - main
+      - assignment10
 
 jobs:
   build:
@@ -80,3 +80,37 @@ jobs:
     
     - name: Run Packer Build
       run: packer build -var-file=packer_variables.pkrvars.hcl .
+
+    - name: Auto Refreshing the auto scaling group
+      run: |
+        export ami_id="$(aws ec2 describe-images \
+          --owners ${{ secrets.AMI_OWNER }} \
+          --query 'sort_by(Images, &CreationDate)[-1].ImageId' \
+          --output text)"
+        
+        export launch_template_id="$(aws ec2 describe-launch-templates \
+            --query 'sort_by(LaunchTemplates, &CreateTime)[-1].LaunchTemplateId' \
+          )"
+        
+        export launch_template_no_quotes=`sed -e 's/^"//' -e 's/"$//' <<<"$launch_template_id"`
+
+        export auto_scaling_name="$(aws autoscaling describe-auto-scaling-groups \
+            --query "AutoScalingGroups[0].AutoScalingGroupName"
+          )"
+        
+        if ! [[ $launch_template_id == null ]] && ! [[ $auto_scaling_name == null ]]
+          then
+
+            echo "Launch Template Found"
+
+            aws ec2 create-launch-template-version --launch-template-id $auto_scaling_name \
+              --version-description Version2.0Template \
+              --source-version 1 \
+              --launch-template-data ImageId=$ami_id \
+              --region us-east-1
+
+            aws autoscaling start-instance-refresh \
+            --auto-scaling-group-name $auto_scaling_name
+          else
+            echo "Launch Template Not Found"
+          fi
