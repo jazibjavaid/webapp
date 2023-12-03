@@ -57,7 +57,7 @@ app.use((req, res, next) => {
         .then(() => {
             app.use('/healthz', healthzroutes);
             app.use(basicAuthenticator);
-            app.use('/v2/assignment', assignmentroutes);
+            app.use('/v1/assignment', assignmentroutes);
             next();
         })
         .catch((err) => {
