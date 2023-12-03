@@ -132,3 +132,7 @@ jobs:
           else
             echo "Launch Template Not Found"
           fi
+        while [[ "$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name $auto_scaling_name_no_quotes --query 'InstanceRefreshes[0].Status' --output text)" != "Successful" ]]; do
+          echo "Waiting for instance refresh to complete..."
+          sleep 30
+        done

@@ -85,3 +85,6 @@ PUT - http://localhost:8080/v1/assignment/{id}, where you should use: "204 Conte
 
 DELETE - http://localhost:8080/v1/assignment/{id}, where you should use: "204 No Content".
 
+## AWS CLI command to import SSL certificate
+
+aws acm import-certificate --certificate fileb://demo_mywebapp_me.crt --private-key fileb://private.key --certificate-chain fileb://demo_mywebapp_me.ca-bundle
